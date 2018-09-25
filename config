@@ -1,0 +1,243 @@
+currentDeployment: default
+deploymentConfigurations:
+- name: default
+  version: 1.7.0
+  providers:
+    appengine:
+      enabled: false
+      accounts: []
+    aws:
+      enabled: false
+      accounts: []
+      bakeryDefaults:
+        baseImages: []
+      defaultKeyPairTemplate: '{{name}}-keypair'
+      defaultRegions:
+      - name: us-west-2
+      defaults:
+        iamRole: BaseIAMRole
+    ecs:
+      enabled: false
+      accounts: []
+    azure:
+      enabled: false
+      accounts: []
+      bakeryDefaults:
+        templateFile: azure-linux.json
+        baseImages: []
+    dcos:
+      enabled: false
+      accounts: []
+      clusters: []
+    dockerRegistry:
+      enabled: true
+      accounts:
+      - name: dockerhub
+        requiredGroupMembership: []
+        providerVersion: V1
+        permissions: {}
+        address: https://index.docker.io
+        cacheIntervalSeconds: 30
+        clientTimeoutMillis: 60000
+        cacheThreads: 1
+        paginateSize: 100
+        sortTagsByDate: false
+        trackDigests: false
+        insecureRegistry: false
+        repositories:
+        - opnfv/clover
+      primaryAccount: dockerhub
+    google:
+      enabled: false
+      accounts: []
+      bakeryDefaults:
+        templateFile: gce.json
+        baseImages: []
+        zone: us-central1-f
+        network: default
+        useInternalIp: false
+    kubernetes:
+      enabled: true
+      accounts:
+      - name: my-kubernetes-account
+        requiredGroupMembership: []
+        providerVersion: V2
+        permissions: {}
+        dockerRegistries: []
+        configureImagePullSecrets: true
+        serviceAccount: true
+        cacheThreads: 1
+        namespaces: []
+        omitNamespaces: []
+        kinds: []
+        omitKinds: []
+        customResources: []
+        cachingPolicies: []
+        oauthScopes: []
+        oAuthScopes: []
+      primaryAccount: my-kubernetes-account
+    openstack:
+      enabled: false
+      accounts: []
+      bakeryDefaults:
+        baseImages: []
+    oracle:
+      enabled: false
+      accounts: []
+  deploymentEnvironment:
+    size: SMALL
+    type: Distributed
+    accountName: my-kubernetes-account
+    updateVersions: true
+    consul:
+      enabled: false
+    vault:
+      enabled: false
+    customSizing: {}
+    gitConfig:
+      upstreamUser: spinnaker
+    haServices:
+      clouddriver:
+        enabled: false
+      echo:
+        enabled: false
+  persistentStorage:
+    persistentStoreType: s3
+    azs: {}
+    gcs:
+      rootFolder: front50
+    redis: {}
+    s3:
+      bucket: spinnaker-artifacts
+      rootFolder: front50
+      endpoint: http://minio-service.spinnaker:9000
+      accessKeyId: dont-use-this
+      secretAccessKey: for-production
+    oracle: {}
+  features:
+    auth: false
+    fiat: false
+    chaos: false
+    entityTags: false
+    jobs: false
+  metricStores:
+    datadog:
+      enabled: false
+    prometheus:
+      enabled: false
+      add_source_metalabels: true
+    stackdriver:
+      enabled: false
+    period: 30
+    enabled: false
+  notifications:
+    slack:
+      enabled: false
+  timezone: America/Los_Angeles
+  ci:
+    jenkins:
+      enabled: false
+      masters: []
+    travis:
+      enabled: false
+      masters: []
+    wercker:
+      enabled: false
+      masters: []
+  security:
+    apiSecurity:
+      ssl:
+        enabled: false
+      overrideBaseUrl: /gate
+    uiSecurity:
+      ssl:
+        enabled: false
+    authn:
+      oauth2:
+        enabled: false
+        client: {}
+        resource: {}
+        userInfoMapping: {}
+      saml:
+        enabled: false
+      ldap:
+        enabled: false
+      x509:
+        enabled: false
+      iap:
+        enabled: false
+      enabled: false
+    authz:
+      groupMembership:
+        service: EXTERNAL
+        google:
+          roleProviderType: GOOGLE
+        github:
+          roleProviderType: GITHUB
+        file:
+          roleProviderType: FILE
+        ldap:
+          roleProviderType: LDAP
+      enabled: false
+  artifacts:
+    bitbucket:
+      enabled: false
+      accounts: []
+    gcs:
+      enabled: false
+      accounts: []
+    github:
+      enabled: false
+      accounts: []
+    gitlab:
+      enabled: false
+      accounts: []
+    http:
+      enabled: false
+      accounts: []
+    s3:
+      enabled: false
+      accounts: []
+  pubsub:
+    google:
+      enabled: false
+      subscriptions: []
+  canary:
+    enabled: true
+    serviceIntegrations:
+    - name: google
+      enabled: false
+      accounts: []
+      gcsEnabled: false
+      stackdriverEnabled: false
+    - name: prometheus
+      enabled: true
+      accounts:
+      - name: prom
+        endpoint:
+          baseUrl: http://10.233.44.61:9090/
+        supportedTypes:
+        - METRICS_STORE
+    - name: datadog
+      enabled: false
+      accounts: []
+    - name: aws
+      enabled: true
+      accounts:
+      - name: minio-s3
+        bucket: spinnaker-artifacts
+        rootFolder: kayenta 
+        endpoint: http://minio-service.spinnaker:9000
+        accessKeyId: dont-use-this
+        secretAccessKey: for-production
+        supportedTypes:
+        - CONFIGURATION_STORE
+        - OBJECT_STORE
+
+      s3Enabled: true
+    reduxLoggerEnabled: true
+    defaultJudge: NetflixACAJudge-v1.0
+    defaultMetricsStore: prometheus
+    stagesEnabled: true
+    templatesEnabled: true
+    showAllConfigsEnabled: true
