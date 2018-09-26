@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-artifact
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-prod
+  template:
+    metadata:
+      labels:
+        app: nginx-prod
+    spec:
+      containers:
+        - image: 'wtwde/spin-kub-demo:v0.0.6'
+          name: nginx
+          ports:
+            - containerPort: 8000
